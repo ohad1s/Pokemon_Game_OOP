@@ -1,5 +1,13 @@
 package graph;
 
+import com.google.gson.Gson;
+import json.AgentForJson;
+import json.PokemonForJson;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+
 public class Agent {
     private int id;
     private double value;
@@ -47,5 +55,30 @@ public class Agent {
 
     public double y() {
         return this.pos.y();
+    }
+
+    public boolean LoadFromJson(String file) {
+        try {
+            Gson json = new Gson();
+            FileReader FR = new FileReader(file);
+            BufferedReader BR = new BufferedReader(FR);
+            AgentForJson AgentFromJson = json.fromJson(BR, AgentForJson.class);
+            this.dest = AgentFromJson.dest;
+            this.id = AgentFromJson.id;
+            this.speed = AgentFromJson.speed;
+            this.src = AgentFromJson.src;
+            this.value = AgentFromJson.value;
+            String[] arr = AgentFromJson.pos.split(",");
+            this.pos = new GeoLocationClass(Double.parseDouble(arr[0]), Double.parseDouble(arr[1]), 0);
+            return true;
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public String toString(){
+        return "  ID:   "+this.getId()+"src:  "+this.getSrc()+"  dest:   "+this.getDest()+"  Value:   "+this.getValue()+"  Speed:   "+this.getSpeed()+"   pos:   "+this.pos;
     }
 }

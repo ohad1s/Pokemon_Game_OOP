@@ -12,12 +12,6 @@ import java.util.List;
 public class Panel extends JPanel {
     DirectedWeightedClass graph;
     final Dimension ScreenSize = Toolkit.getDefaultToolkit().getScreenSize();
-    boolean shorted;
-    List<NodeDataClass>shortedP;
-    boolean isCenter;
-    NodeDataClass center;
-    boolean isTsp;
-    List<NodeDataClass>tspList;
     double minX,minY,maxX,maxY;
     double X_par, Y_par;
 
@@ -29,9 +23,6 @@ public class Panel extends JPanel {
         super();
         this.graph = graph;
         this.setSize(ScreenSize.width, ScreenSize.height);
-        this.shorted=false;
-        this.isCenter=false;
-        this.isTsp=false;
         this.minX=Double.MAX_VALUE;
         this.maxY=Double.MIN_VALUE;
         this.maxX=Double.MIN_VALUE;
@@ -49,15 +40,6 @@ public class Panel extends JPanel {
     protected void paintComponent(Graphics g) {
         DrawNodes(g);
         DrawEdges(g);
-        if (shorted){
-            DrawShortestPath(g,this.shortedP);
-        }
-        if (isCenter){
-            boldCenter(g,this.center);
-        }
-        if (isTsp){
-            tspDraw(g,this.tspList);
-        }
     }
 
     /**
@@ -116,66 +98,6 @@ public class Panel extends JPanel {
         }
     }
 
-    /**
-     * this method emphasize the shortest path between 2 nodes of the graph on the graphWindow
-     * @param g
-     * @param Shortest
-     */
-    private void DrawShortestPath(Graphics g, List<NodeDataClass> Shortest){
-        Iterator<NodeDataClass>iter=Shortest.listIterator();
-        if (iter.hasNext()) {
-            NodeDataClass p1 = iter.next();
-            while (iter.hasNext()) {
-                NodeDataClass p2 = iter.next();
-                int x1=(int) ((p1.getLocation().x()-this.minX)*this.X_par);
-                int y1=(int) ((p1.getLocation().y()-this.minY)*this.Y_par);
-                int x2=(int) ((p2.getLocation().x()-this.minX)*this.X_par);
-                int y2=(int) ((p2.getLocation().y()-this.minY)*this.Y_par);
-                Arrow ar = new Arrow(x1+9, y1+9, x2+9, y2+9, Color.GREEN, 2);
-                ar.draw(g);
-                p1=p2;
-            }
-        }
-    }
 
-    /**
-     * this method emphasize the center node of the graph on the graphWindow
-     * @param g
-     * @param center
-     */
-    private void boldCenter(Graphics g, NodeDataClass center) {
-        int x1=(int) ((center.getLocation().x()-this.minX)*this.X_par);
-        int y1=(int) ((center.getLocation().y()-this.minY)*this.Y_par);
-        g.setColor(Color.MAGENTA);
-        g.fillOval(x1,y1,18,18);
-        Graphics2D g2d=(Graphics2D)g;
-        g2d.setColor(Color.RED);
-        g2d.setStroke(new BasicStroke(12));
-        int key= center.getKey();
-        String keyS=String.valueOf(key);
-        g2d.drawString(keyS,x1,y1);
-    }
-
-    /**
-     * this method emphasize the shortest path between a group of nodes (cities) of the graph on the graphWindow
-     * @param g
-     * @param tspNodes
-     */
-    private void tspDraw(Graphics g, List<NodeDataClass> tspNodes) {
-        Iterator<NodeDataClass>iter=tspNodes.listIterator();
-        if (iter.hasNext()) {
-            NodeDataClass p1 = iter.next();
-            while (iter.hasNext()) {
-                NodeDataClass p2 = iter.next();
-                int x1=(int) ((p1.getLocation().x()-this.minX)*this.X_par);
-                int y1=(int) ((p1.getLocation().y()-this.minY)*this.Y_par);
-                int x2=(int) ((p2.getLocation().x()-this.minX)*this.X_par);
-                int y2=(int) ((p2.getLocation().y()-this.minY)*this.Y_par);
-                Arrow ar = new Arrow(x1+9, y1+9, x2+9, y2+9, Color.GREEN, 2);
-                ar.draw(g);
-                p1=p2;
-            }
-        }
-    }
 }
 

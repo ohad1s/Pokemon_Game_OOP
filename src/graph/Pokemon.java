@@ -1,10 +1,7 @@
 package graph;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import json.EdgeForJson;
-import json.GraphJson;
-import json.NodeForJson;
+import json.PokemonForJson;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -26,7 +23,7 @@ public class Pokemon {
     public Pokemon(double value, int type, double x, double y) {
         this.value = value;
         this.type = type;
-        this.pos = new GeoLocationClass(x, y, 0);
+        this.pos = new GeoLocationClass(x,y, 0);
     }
 
     public double getValue() {
@@ -49,21 +46,25 @@ public class Pokemon {
         return pos;
     }
 
-    public Pokemon LoadFromJson(String file) {
+    public boolean LoadFromJson(String file) {
         try {
             Gson json = new Gson();
             FileReader FR = new FileReader(file);
             BufferedReader BR = new BufferedReader(FR);
-            Pokemon PokemonFromJson = json.fromJson(BR, Pokemon.class);
-            return PokemonFromJson;
+            PokemonForJson PokemonFromJson = json.fromJson(BR, PokemonForJson.class);
+            this.type=PokemonFromJson.type;
+            this.value= PokemonFromJson.value;
+            String[]arr=PokemonFromJson.pos.split(",");
+            this.pos=new GeoLocationClass(Double.parseDouble(arr[0]),Double.parseDouble(arr[1]),0);
+            return true;
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            return null;
+            return false;
         }
     }
 
     public String toString(){
-        return "Type:  "+this.getType()+"  Value:   "+this.getValue()+"   pos:   "+this.x()+" "+this.y();
+        return "Type:  "+this.getType()+"  Value:   "+this.getValue()+"   pos:   "+this.pos;
     }
 }
