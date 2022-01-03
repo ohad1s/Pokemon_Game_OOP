@@ -2,14 +2,14 @@ package GUI;
 
 
 
-import graph.DirectedWeightedGraphAlgorithmsClass;
-import graph.NodeDataClass;
+import graph.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -19,18 +19,22 @@ public class graphWindow extends JFrame implements ActionListener {
     Panel panel;
     final Dimension ScreenSize = Toolkit.getDefaultToolkit().getScreenSize();
     MenuBar menuBar;
+    Game myGame;
+    int ttl;
     /**
      * this method is the constructor of graphWindow
      */
-    public graphWindow(DirectedWeightedGraphAlgorithmsClass graph) {
+    public graphWindow(DirectedWeightedGraphAlgorithmsClass graph,Game myGame) {
         super();
+        this.myGame =myGame;
         this.graph=graph;
-        this.panel = new Panel(this.graph.getGraph());
-        this.menuBar = new MenuBar();
-        this.setMenuBar(this.menuBar);
+        this.panel = new Panel(this.graph.getGraph(),this.myGame);
+//        this.menuBar = new MenuBar();
+//        this.setMenuBar(this.menuBar);
         this.add(this.panel);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(ScreenSize.width, ScreenSize.height);
+        this.setResizable(true);
         this.setBackground(Color.GREEN);
         this.setVisible(true);
     }

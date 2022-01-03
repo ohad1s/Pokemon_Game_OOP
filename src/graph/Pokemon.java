@@ -26,6 +26,18 @@ public class Pokemon {
         this.pos = new GeoLocationClass(x,y, 0);
     }
 
+    public void setValue(double value) {
+        this.value = value;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public void setPos(GeoLocationClass pos) {
+        this.pos = pos;
+    }
+
     public double getValue() {
         return value;
     }
@@ -49,16 +61,16 @@ public class Pokemon {
     public boolean LoadFromJson(String file) {
         try {
             Gson json = new Gson();
-            FileReader FR = new FileReader(file);
-            BufferedReader BR = new BufferedReader(FR);
-            PokemonForJson PokemonFromJson = json.fromJson(BR, PokemonForJson.class);
+//            FileReader FR = new FileReader(file);
+//            BufferedReader BR = new BufferedReader(FR);
+            PokemonForJson PokemonFromJson = json.fromJson(file, PokemonForJson.class);
             this.type=PokemonFromJson.type;
             this.value= PokemonFromJson.value;
             String[]arr=PokemonFromJson.pos.split(",");
             this.pos=new GeoLocationClass(Double.parseDouble(arr[0]),Double.parseDouble(arr[1]),0);
             return true;
 
-        } catch (FileNotFoundException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }

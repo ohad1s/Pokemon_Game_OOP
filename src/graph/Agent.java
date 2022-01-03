@@ -25,6 +25,30 @@ public class Agent {
         this.pos = new GeoLocationClass(x, y, 0);
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setValue(double value) {
+        this.value = value;
+    }
+
+    public void setSrc(int src) {
+        this.src = src;
+    }
+
+    public void setDest(int dest) {
+        this.dest = dest;
+    }
+
+    public void setSpeed(double speed) {
+        this.speed = speed;
+    }
+
+    public void setPos(GeoLocationClass pos) {
+        this.pos = pos;
+    }
+
     public int getId() {
         return id;
     }
@@ -60,9 +84,9 @@ public class Agent {
     public boolean LoadFromJson(String file) {
         try {
             Gson json = new Gson();
-            FileReader FR = new FileReader(file);
-            BufferedReader BR = new BufferedReader(FR);
-            AgentForJson AgentFromJson = json.fromJson(BR, AgentForJson.class);
+//            FileReader FR = new FileReader(file);
+//            BufferedReader BR = new BufferedReader(FR);
+            AgentForJson AgentFromJson = json.fromJson(file, AgentForJson.class);
             this.dest = AgentFromJson.dest;
             this.id = AgentFromJson.id;
             this.speed = AgentFromJson.speed;
@@ -72,7 +96,7 @@ public class Agent {
             this.pos = new GeoLocationClass(Double.parseDouble(arr[0]), Double.parseDouble(arr[1]), 0);
             return true;
 
-        } catch (FileNotFoundException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }

@@ -93,6 +93,7 @@ public class DirectedWeightedGraphAlgorithmsClass {
 
     /**
      * this method returns a boolean value whether the given graph is strongly connected or not.
+     *
      * @param g
      * @param nodeFirst
      * @return
@@ -112,6 +113,7 @@ public class DirectedWeightedGraphAlgorithmsClass {
 
     /**
      * this method is a BFS algorithm.
+     *
      * @param node
      * @param g
      */
@@ -229,6 +231,7 @@ public class DirectedWeightedGraphAlgorithmsClass {
 
     /**
      * this method returns the shortest path that goes through all the given vertices.
+     *
      * @param cities - list of vertices
      * @return
      */
@@ -245,20 +248,21 @@ public class DirectedWeightedGraphAlgorithmsClass {
 
     /**
      * this method is a greedy algorithm to find the shortest path between al cities.
+     *
      * @param unvisited
      * @param first
      * @return
      */
-    public List<NodeDataClass> tsp(HashSet<Integer> unvisited, NodeDataClass first){
+    public List<NodeDataClass> tsp(HashSet<Integer> unvisited, NodeDataClass first) {
         List<NodeDataClass> toReturn = new ArrayList<>();
         NodeDataClass currentNode = first;
-        while (unvisited.size() > 0){
+        while (unvisited.size() > 0) {
             unvisited.remove(currentNode.getKey());
             int nextNodeId = findIdOfMinDistForTSP(unvisited, currentNode.getKey());
             List<NodeDataClass> pathFromCurrentToNext = shortestPath(currentNode.getKey(), nextNodeId);
-            for (NodeDataClass node : pathFromCurrentToNext){
+            for (NodeDataClass node : pathFromCurrentToNext) {
                 int pathNodeID = node.getKey();
-                if(unvisited.contains(pathNodeID)){
+                if (unvisited.contains(pathNodeID)) {
                     unvisited.remove(pathNodeID);
                 }
             }
@@ -303,14 +307,14 @@ public class DirectedWeightedGraphAlgorithmsClass {
     public boolean load(String file) {
         try {
             Gson json = new Gson();
-            FileReader FR = new FileReader(file);
-            BufferedReader BR = new BufferedReader(FR);
-            GraphJson graphFromJson = json.fromJson(BR, GraphJson.class);
+//            FileReader FR = new FileReader(file);
+//            BufferedReader BR = new BufferedReader(FR);
+            GraphJson graphFromJson = json.fromJson(file, GraphJson.class);
             DirectedWeightedClass graph = deserializeGraph(graphFromJson);
             init(graph);
             return true;
 
-        } catch (FileNotFoundException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
@@ -485,6 +489,15 @@ public class DirectedWeightedGraphAlgorithmsClass {
             inverted.connect(currentEdge.getDest(), currentEdge.getSrc(), currentEdge.getWeight());
         }
         return inverted;
+    }
+
+    public void str() {
+        Iterator iter = graph.nodeIter();
+        while (iter.hasNext()) {
+            NodeDataClass n = (NodeDataClass) iter.next();
+            System.out.println(n.getKey() + "  " + n.getLocation().x() + "  " + n.getLocation().y());
+
+        }
     }
 
 
