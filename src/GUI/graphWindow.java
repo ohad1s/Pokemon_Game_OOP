@@ -18,7 +18,6 @@ public class graphWindow extends JFrame implements ActionListener {
     DirectedWeightedGraphAlgorithmsClass graph;
     Panel panel;
     final Dimension ScreenSize = Toolkit.getDefaultToolkit().getScreenSize();
-    MenuBar menuBar;
     Game myGame;
     int ttl;
     /**
@@ -29,13 +28,11 @@ public class graphWindow extends JFrame implements ActionListener {
         this.myGame =myGame;
         this.graph=graph;
         this.panel = new Panel(this.graph.getGraph(),this.myGame);
-//        this.menuBar = new MenuBar();
-//        this.setMenuBar(this.menuBar);
         this.add(this.panel);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(ScreenSize.width, ScreenSize.height);
         this.setResizable(true);
-        this.setBackground(Color.GREEN);
+//        this.setBackground(Color.GREEN);
         this.setVisible(true);
     }
 

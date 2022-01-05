@@ -35,10 +35,7 @@ public class Panel extends JPanel {
         this.minY = Double.MAX_VALUE;
         this.X_par = 0;
         this.Y_par = 0;
-//            try {
-//                BufferedImage image = ImageIO.read(new File("C:\\Users\\shira\\Desktop\\Ex4\\src\\GUI\\images\\charizard.png"));
-//                pokemonsImages[0]=image;
-//            } catch (IOException ex) {}
+
 
 
     }
@@ -52,6 +49,12 @@ public class Panel extends JPanel {
      */
     @Override
     protected void paintComponent(Graphics g) {
+        try {
+            BufferedImage img1 = ImageIO.read(new File("C:\\Users\\shira\\Desktop\\Ex4\\src\\GUI\\images\\background.png"));
+//            pokemonsImages[0] = image;
+            g.drawImage(img1, 0, 0, this);
+        } catch (IOException ex) {
+        }
         DrawNodes(g);
         DrawEdges(g);
         DrawPokemons(g);
@@ -68,11 +71,16 @@ public class Panel extends JPanel {
      * @param g
      */
     private void DrawAgents(Graphics g) {
-        for (Agent a : this.myGame.agents) {
-            int x1 = (int) ((a.x() - this.minX) * this.X_par);
-            int y1 = (int) ((a.y() - this.minY) * this.Y_par);
-            g.setColor(Color.BLUE);
-            g.fillOval(x1, y1, 18, 18);
+//        for (Agent a : this.myGame.agents) {
+        if (myGame.agents.size() > 0) {
+            Iterator<Agent> iter = this.myGame.agents.iterator();
+            while (iter.hasNext()) {
+                Agent a = iter.next();
+                int x1 = (int) ((a.x() - this.minX) * this.X_par);
+                int y1 = (int) ((a.y() - this.minY) * this.Y_par);
+                g.setColor(Color.BLUE);
+                g.fillOval(x1, y1, 18, 18);
+            }
         }
     }
 
@@ -83,11 +91,16 @@ public class Panel extends JPanel {
      * @param g
      */
     private void DrawPokemons(Graphics g) {
-        for (Pokemon p : this.myGame.pokemons) {
-            int x1 = (int) ((p.x() - this.minX) * this.X_par);
-            int y1 = (int) ((p.y() - this.minY) * this.Y_par);
-            g.setColor(Color.MAGENTA);
-            g.fillOval(x1, y1, 18, 18);
+        if (myGame.pokemons.size() > 0) {
+//        for (Pokemon p : this.myGame.pokemons) {
+            Iterator<Pokemon> iter = this.myGame.pokemons.iterator();
+            while (iter.hasNext()) {
+                Pokemon p = iter.next();
+                int x1 = (int) ((p.x() - this.minX) * this.X_par);
+                int y1 = (int) ((p.y() - this.minY) * this.Y_par);
+                g.setColor(Color.MAGENTA);
+                g.fillOval(x1, y1, 18, 18);
+            }
         }
     }
 
