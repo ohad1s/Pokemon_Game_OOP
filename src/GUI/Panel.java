@@ -8,12 +8,10 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 public class Panel extends JPanel {
-    DirectedWeightedClass graph;
+    DiGraph graph;
     Game myGame;
     final Dimension ScreenSize = Toolkit.getDefaultToolkit().getScreenSize();
     double minX, minY, maxX, maxY;
@@ -24,7 +22,7 @@ public class Panel extends JPanel {
     /**
      * this method is the constructor of Panel
      */
-    public Panel(DirectedWeightedClass graph, Game myGame) {
+    public Panel(DiGraph graph, Game myGame) {
         super();
         this.myGame = myGame;
         this.graph = graph;
@@ -71,7 +69,6 @@ public class Panel extends JPanel {
      * @param g
      */
     private void DrawAgents(Graphics g) {
-//        for (Agent a : this.myGame.agents) {
         if (myGame.agents.size() > 0) {
             Iterator<Agent> iter = this.myGame.agents.iterator();
             while (iter.hasNext()) {
@@ -98,7 +95,11 @@ public class Panel extends JPanel {
                 Pokemon p = iter.next();
                 int x1 = (int) ((p.x() - this.minX) * this.X_par);
                 int y1 = (int) ((p.y() - this.minY) * this.Y_par);
-                g.setColor(Color.MAGENTA);
+                if(p.getType() > 0) {
+                    g.setColor(Color.MAGENTA);
+                }else{
+                    g.setColor(Color.GREEN);
+                }
                 g.fillOval(x1, y1, 18, 18);
             }
         }
@@ -110,9 +111,9 @@ public class Panel extends JPanel {
      * @param g
      */
     private void DrawNodes(Graphics g) {
-        Iterator<NodeDataClass> iter1 = this.graph.nodeIter();
+        Iterator<Vertex> iter1 = this.graph.nodeIter();
         while (iter1.hasNext()) {
-            NodeDataClass point = iter1.next();
+            Vertex point = iter1.next();
             if (point.getLocation().x() > this.maxX) {
                 this.maxX = point.getLocation().x();
             }
@@ -128,9 +129,9 @@ public class Panel extends JPanel {
         }
         this.X_par = (ScreenSize.width) / (maxX - minX) * 0.9;
         this.Y_par = (ScreenSize.height) / (maxY - minY) * 0.8;
-        Iterator<NodeDataClass> iter = this.graph.nodeIter();
+        Iterator<Vertex> iter = this.graph.nodeIter();
         while (iter.hasNext()) {
-            NodeDataClass point = iter.next();
+            Vertex point = iter.next();
             g.setColor(Color.BLACK);
             g.fillOval((int) ((point.getLocation().x() - this.minX) * this.X_par), (int) ((point.getLocation().y() - this.minY) * this.Y_par), 18, 18);
             Graphics2D g2d = (Graphics2D) g;
@@ -148,11 +149,11 @@ public class Panel extends JPanel {
      * @param g
      */
     private void DrawEdges(Graphics g) {
-        Iterator<EdgeDataClass> iter = this.graph.edgeIter();
+        Iterator<Edge> iter = this.graph.edgeIter();
         while (iter.hasNext()) {
-            EdgeDataClass arrow = iter.next();
-            NodeDataClass p1 = this.graph.getNode(arrow.getSrc());
-            NodeDataClass p2 = this.graph.getNode(arrow.getDest());
+            Edge arrow = iter.next();
+            Vertex p1 = this.graph.getNode(arrow.getSrc());
+            Vertex p2 = this.graph.getNode(arrow.getDest());
             int x1 = (int) ((p1.getLocation().x() - this.minX) * this.X_par);
             int y1 = (int) ((p1.getLocation().y() - this.minY) * this.Y_par);
             int x2 = (int) ((p2.getLocation().x() - this.minX) * this.X_par);

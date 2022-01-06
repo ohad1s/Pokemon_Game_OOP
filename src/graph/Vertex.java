@@ -1,8 +1,8 @@
 package graph;
 
-public class NodeDataClass {
+public class Vertex {
     private int key;
-    private GeoLocationClass location;
+    private Point3D location;
     private double weight;
     private int tag;
     private String info;
@@ -14,21 +14,21 @@ public class NodeDataClass {
      * @param y
      * @param z
      */
-    public NodeDataClass(int key, double x, double y, double z ){
+    public Vertex(int key, double x, double y, double z ){
         this.key = key;
-        this.location = new GeoLocationClass(x, y, z);
+        this.location = new Point3D(x, y, z);
         this.weight = 0;
         this.tag = 0;
         this.info = "key: " + key + ", location: (" + x + ", " + y + ", " + z + "), weight: " + weight + ", tag: " + tag;
 
     }
 
-    public NodeDataClass(NodeDataClass other){
+    public Vertex(Vertex other){
         this.key = other.getKey();
         double x = other.getLocation().x();
         double y = other.getLocation().y();
         double z = other.getLocation().z();
-        this.location = new GeoLocationClass(x,y,z);
+        this.location = new Point3D(x,y,z);
         this.weight = 0;
         this.tag = 0;
         this.info = "key: " + key + ", location: (" + x + ", " + y + ", " + z + "), weight: " + weight + ", tag: " + tag;
@@ -47,7 +47,7 @@ public class NodeDataClass {
      * this method returns the vertex's GeoLocation.
      * @return GeoLocation
      */
-    public GeoLocationClass getLocation() {
+    public Point3D getLocation() {
         return this.location;
     }
 
@@ -56,7 +56,7 @@ public class NodeDataClass {
      * @param p - other GeoLocation
      */
 
-    public void setLocation(GeoLocationClass p) {
+    public void setLocation(Point3D p) {
         this.location = p;
     }
 

@@ -1,7 +1,7 @@
 package graph;
 
 
-public class EdgeDataClass {
+public class Edge {
     private int src;
     private int dest;
     private double weight;
@@ -14,7 +14,7 @@ public class EdgeDataClass {
      * @param dest
      * @param weight
      */
-    public EdgeDataClass(int src, int dest, double weight){
+    public Edge(int src, int dest, double weight){
         this.src = src;
         this.dest = dest;
         this.weight = weight;
@@ -84,5 +84,9 @@ public class EdgeDataClass {
     public void setTag(int t) {
         this.tag = t;
 
+    }
+
+    public String toString(){
+        return "source: " + src +" dest: " + dest + " weight: " + weight;
     }
 }

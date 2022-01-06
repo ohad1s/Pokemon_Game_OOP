@@ -1,22 +1,20 @@
 package graph;
 import java.util.*;
-import graph.*;
-import json.*;
 
-public class DirectedWeightedClass  {
+public class DiGraph {
 
-    private Hashtable<Integer, NodeDataClass> vertices;
-    private Hashtable<String, EdgeDataClass> edges;
-    private Hashtable<Integer, HashSet<EdgeDataClass>> edgesFromSpecificVertex;
+    private Hashtable<Integer, Vertex> vertices;
+    private Hashtable<String, Edge> edges;
+    private Hashtable<Integer, HashSet<Edge>> edgesFromSpecificVertex;
     private int MC;
 
     /**
      * this method is the constructor that initiates the DirectedWeightedGraph.
      */
-    public DirectedWeightedClass() {
+    public DiGraph() {
         this.vertices = new Hashtable<>();
         this.edges = new Hashtable<>();
-        this.edgesFromSpecificVertex = new Hashtable<Integer, HashSet<EdgeDataClass>>();
+        this.edgesFromSpecificVertex = new Hashtable<Integer, HashSet<Edge>>();
         this.MC = 0;
     }
 
@@ -26,9 +24,9 @@ public class DirectedWeightedClass  {
      * @param key - the node_id
      * @return
      */
-    public NodeDataClass getNode(int key) {
+    public Vertex getNode(int key) {
         if (vertices.containsKey(key)) {
-            NodeDataClass toReturn = vertices.get(key);
+            Vertex toReturn = vertices.get(key);
             return toReturn;
         } else {
             return null;
@@ -43,10 +41,10 @@ public class DirectedWeightedClass  {
      * @param dest
      * @return
      */
-    public EdgeDataClass getEdge(int src, int dest) {
+    public Edge getEdge(int src, int dest) {
         String key = "" + src + "," + dest;
         if (edges.containsKey(key)) {
-            EdgeDataClass toReturn = edges.get(key);
+            Edge toReturn = edges.get(key);
             return toReturn;
         } else {
             return null;
@@ -58,7 +56,7 @@ public class DirectedWeightedClass  {
      *
      * @return
      */
-    public Hashtable<Integer, NodeDataClass> getVertices() throws RuntimeException {
+    public Hashtable<Integer, Vertex> getVertices() throws RuntimeException {
         return vertices;
     }
 
@@ -67,7 +65,7 @@ public class DirectedWeightedClass  {
      *
      * @return
      */
-    public Hashtable<String, EdgeDataClass> getEdges() {
+    public Hashtable<String, Edge> getEdges() {
         return edges;
     }
 
@@ -76,7 +74,7 @@ public class DirectedWeightedClass  {
      *
      * @return
      */
-    public Hashtable<Integer, HashSet<EdgeDataClass>> getEdgesFromSpecificVertex() {
+    public Hashtable<Integer, HashSet<Edge>> getEdgesFromSpecificVertex() {
         return edgesFromSpecificVertex;
     }
 
@@ -86,11 +84,11 @@ public class DirectedWeightedClass  {
      * @param n
      */
 
-    public void addNode(NodeDataClass n) {
+    public void addNode(Vertex n) {
         int idKey = n.getKey();
         if (!vertices.containsKey(idKey)) {
             vertices.put(idKey, n);
-            HashSet<EdgeDataClass> toAdd = new HashSet<>();
+            HashSet<Edge> toAdd = new HashSet<>();
             edgesFromSpecificVertex.put(idKey, toAdd);
             MC++;
         }
@@ -111,9 +109,9 @@ public class DirectedWeightedClass  {
         }
         String key = "" + src + "," + dest;
         if (!edges.containsKey(key)) {
-            EdgeDataClass toConnect = new EdgeDataClass(src, dest, weight);
+            Edge toConnect = new Edge(src, dest, weight);
             edges.put(key, toConnect);
-            HashSet<EdgeDataClass> srcNodeEdges = edgesFromSpecificVertex.get(src);
+            HashSet<Edge> srcNodeEdges = edgesFromSpecificVertex.get(src);
             srcNodeEdges.add(toConnect);
             MC++;
         }
@@ -125,7 +123,7 @@ public class DirectedWeightedClass  {
      * @return
      */
 
-    public Iterator<NodeDataClass> nodeIter() throws ConcurrentModificationException{
+    public Iterator<Vertex> nodeIter() throws ConcurrentModificationException{
         return this.vertices.values().iterator();
     }
 
@@ -135,7 +133,7 @@ public class DirectedWeightedClass  {
      * @return
      */
 
-    public Iterator<EdgeDataClass> edgeIter() {
+    public Iterator<Edge> edgeIter() {
         return edges.values().iterator();
     }
 
@@ -147,9 +145,9 @@ public class DirectedWeightedClass  {
      * @return
      */
 
-    public Iterator<EdgeDataClass> edgeIter(int node_id) {
+    public Iterator<Edge> edgeIter(int node_id) {
         if (vertices.containsKey(node_id)) {
-            HashSet<EdgeDataClass> toIterate = edgesFromSpecificVertex.get(node_id);
+            HashSet<Edge> toIterate = edgesFromSpecificVertex.get(node_id);
             return toIterate.iterator();
         } else {
             return null;
@@ -165,13 +163,13 @@ public class DirectedWeightedClass  {
      * @return
      */
 
-    public NodeDataClass removeNode(int key) {
+    public Vertex removeNode(int key) {
         if (vertices.containsKey(key)) {
-            NodeDataClass toRemove = vertices.get(key);
-            Iterator<EdgeDataClass> edgeDataIterator = edgeIter();
+            Vertex toRemove = vertices.get(key);
+            Iterator<Edge> edgeDataIterator = edgeIter();
             ArrayList<String> keysToRemove = new ArrayList<>();
             while (edgeDataIterator.hasNext()) {
-                EdgeDataClass edgeToCheck = edgeDataIterator.next();
+                Edge edgeToCheck = edgeDataIterator.next();
                 int currentSrc = edgeToCheck.getSrc();
                 int currentDest = edgeToCheck.getDest();
                 if (currentSrc == key || currentDest == key) {
@@ -180,10 +178,10 @@ public class DirectedWeightedClass  {
                 }
             }
             for (String keyToRemove : keysToRemove) {
-                EdgeDataClass edgeToRemove = edges.remove(keyToRemove);
+                Edge edgeToRemove = edges.remove(keyToRemove);
                 if (edgeToRemove.getDest() == key) {
                     int edgeToRemoveSrc = edgeToRemove.getSrc();
-                    HashSet<EdgeDataClass> destVertexEdges = edgesFromSpecificVertex.get(edgeToRemoveSrc);
+                    HashSet<Edge> destVertexEdges = edgesFromSpecificVertex.get(edgeToRemoveSrc);
                     destVertexEdges.remove(edgeToRemove);
 
                 }
@@ -207,11 +205,11 @@ public class DirectedWeightedClass  {
      * @param dest
      * @return
      */
-    public EdgeDataClass removeEdge(int src, int dest) {
+    public Edge removeEdge(int src, int dest) {
         String key = "" + src + "," + dest;
         if (edges.containsKey(key)) {
-            EdgeDataClass toRemove = edges.remove(key);
-            HashSet<EdgeDataClass> srcEdges = edgesFromSpecificVertex.get(src);
+            Edge toRemove = edges.remove(key);
+            HashSet<Edge> srcEdges = edgesFromSpecificVertex.get(src);
             srcEdges.remove(toRemove);
             MC++;
             return toRemove;

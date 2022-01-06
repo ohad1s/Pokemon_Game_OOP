@@ -37,7 +37,7 @@ public class Client {
     }
 
     /**
-     * use this function to signal end of comunication with the server.
+     * use this function to signal end of communication with the server.
      * 
      * @throws IOException
      */

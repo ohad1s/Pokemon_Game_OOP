@@ -4,34 +4,32 @@ package ex4_java_client; /**
  */
 
 import GUI.graphWindow;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import graph.DirectedWeightedGraphAlgorithmsClass;
+import graph.Agent;
+import graph.DiGraphAlgo;
 import graph.Game;
-import graph.GeoLocationClass;
 import graph.Pokemon;
-import json.PokemonForJson;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
 import java.io.IOException;
-import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 public class StudentCode {
-    public static void main(String[] args) {
+    public static void main(String[] args)  {
         Client client = new Client();
+
         try {
             client.startConnection("127.0.0.1", 6666);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
         String graphStr = client.getGraph();
-        DirectedWeightedGraphAlgorithmsClass graphForGame = new DirectedWeightedGraphAlgorithmsClass();
+        DiGraphAlgo graphForGame = new DiGraphAlgo();
         graphForGame.load(graphStr);
         String pokemonsStr = client.getPokemons();
         String infoStr = client.getInfo();
+
         int sum_agents = 0;
         try {
             JSONObject infoJ = new JSONObject(infoStr);
@@ -40,30 +38,34 @@ public class StudentCode {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        for (int i = 0; i < sum_agents; i++) {
-            client.addAgent("{\"id\":0}"); //we need to think which node to start with any agant
+
+        Game myGame = new Game(graphForGame);
+        myGame.UpdatePokemons(pokemonsStr);
+        for (int i = 0; i < sum_agents && i < myGame.pokemons.size(); i++) {
+            Pokemon currPokemon = myGame.pokemons.get(i);
+            int pokEdgeSrc = currPokemon.getEdge().getSrc();
+            client.addAgent("{\"id\":" + pokEdgeSrc + "}"); //we need to think which node to start with any agant
         }
         String agentsStr = client.getAgents();
-        Game myGame = new Game();
-        myGame.initPokemons(pokemonsStr);
-        myGame.initAgents(agentsStr);
-        myGame.initInfo(infoStr);
-        int ttl = Integer.parseInt(client.timeToEnd());
-        myGame.ttl = ttl / 1000;
+        myGame.UpdateAgents(agentsStr);
+        myGame.UpdateInfo(infoStr);
+        myGame.initAgentMaps();
+        int startTIme = Integer.parseInt(client.timeToEnd());
+        myGame.ttl = startTIme / 1000;
         String isRunningStr = client.isRunning();
         System.out.println(isRunningStr);
         client.start();
+        startTIme = Integer.parseInt(client.timeToEnd()) / 1000;
+        System.out.println("" + startTIme);
         graphWindow gWnd = new graphWindow(graphForGame, myGame);
         while (client.isRunning().equals("true")) {
-//            System.out.println(client.getAgents());
-//            System.out.println(client.getPokemons());
-//            System.out.println(client.timeToEnd());
-//            System.out.println(client.getInfo());
-//            Scanner keyboard = new Scanner(System.in);
-//            System.out.println("enter the next dest: ");
-//            int next = keyboard.nextInt();
-            for (int j = 0; j < sum_agents; j++) {
-                client.chooseNextEdge("{\"agent_id\":" + j + ", \"next_node_id\": " + myGame.agents.get(j).getSrc()+1 + "}");
+            for (Agent agent : myGame.agents) {
+                int agentId = agent.getId();
+                if (agent.getDest() != -1) {
+                    continue;
+                }
+                int nextDest = myGame.agentNextDest(agent);
+                client.chooseNextEdge("{\"agent_id\":" + agentId + ", \"next_node_id\": " + nextDest + "}");
             }
             pokemonsStr = client.getPokemons();
             agentsStr = client.getAgents();
@@ -73,8 +75,23 @@ public class StudentCode {
             myGame.UpdateInfo(infoStr);
             gWnd.repaint();
             client.move();
+            try {
+                TimeUnit.MILLISECONDS.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
         }
+        try {
+            client.stopConnection();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        gWnd.setVisible(false);
+        gWnd.dispose();
+
     }
 
+
 }
+
