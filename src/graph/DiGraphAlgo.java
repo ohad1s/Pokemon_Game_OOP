@@ -1,7 +1,6 @@
 package graph;
 
 
-import graph.*;
 import json.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -9,9 +8,9 @@ import com.google.gson.GsonBuilder;
 import java.io.*;
 import java.util.*;
 
-public class DirectedWeightedGraphAlgorithmsClass {
-    private DirectedWeightedClass graph;
-    private DirectedWeightedClass invertedGraph;
+public class DiGraphAlgo {
+    private DiGraph graph;
+    private DiGraph invertedGraph;
     private Hashtable<Integer, Double> mapDist;
     private Hashtable<Integer, Integer> mapPrev;
     private static final int VISITED = 1;
@@ -21,9 +20,9 @@ public class DirectedWeightedGraphAlgorithmsClass {
     /**
      * this method is the constructor of DirectedWeightedGraphAlgorithm
      */
-    public DirectedWeightedGraphAlgorithmsClass() {
-        this.graph = new DirectedWeightedClass();
-        this.invertedGraph = new DirectedWeightedClass();
+    public DiGraphAlgo() {
+        this.graph = new DiGraph();
+        this.invertedGraph = new DiGraph();
         this.mapDist = new Hashtable<>();
         this.mapPrev = new Hashtable<>();
     }
@@ -34,7 +33,7 @@ public class DirectedWeightedGraphAlgorithmsClass {
      * @param g
      */
 
-    public void init(DirectedWeightedClass g) {
+    public void init(DiGraph g) {
         this.graph = g;
         this.invertedGraph = invertGraph();
     }
@@ -45,7 +44,7 @@ public class DirectedWeightedGraphAlgorithmsClass {
      * @return
      */
 
-    public DirectedWeightedClass getGraph() {
+    public DiGraph getGraph() {
         return this.graph;
     }
 
@@ -54,20 +53,20 @@ public class DirectedWeightedGraphAlgorithmsClass {
      *
      * @return
      */
-    public DirectedWeightedClass copy() {
-        DirectedWeightedClass duplicatedGraph = new DirectedWeightedClass();
-        Iterator<NodeDataClass> verticesIterator = this.graph.nodeIter();
+    public DiGraph copy() {
+        DiGraph duplicatedGraph = new DiGraph();
+        Iterator<Vertex> verticesIterator = this.graph.nodeIter();
         while (verticesIterator.hasNext()) {
-            NodeDataClass currentVertex = verticesIterator.next();
+            Vertex currentVertex = verticesIterator.next();
             double x = currentVertex.getLocation().x();
             double y = currentVertex.getLocation().y();
             double z = currentVertex.getLocation().z();
-            NodeDataClass toAdd = new NodeDataClass(currentVertex.getKey(), x, y, z);
+            Vertex toAdd = new Vertex(currentVertex.getKey(), x, y, z);
             duplicatedGraph.addNode(toAdd);
         }
-        Iterator<EdgeDataClass> edgesIterator = this.graph.edgeIter();
+        Iterator<Edge> edgesIterator = this.graph.edgeIter();
         while (edgesIterator.hasNext()) {
-            EdgeDataClass currentEdge = edgesIterator.next();
+            Edge currentEdge = edgesIterator.next();
             int src = currentEdge.getSrc();
             int dest = currentEdge.getDest();
             double weight = currentEdge.getWeight();
@@ -85,8 +84,8 @@ public class DirectedWeightedGraphAlgorithmsClass {
 
     public boolean isConnected() {
 
-        Iterator<NodeDataClass> graphNodeIter = graph.nodeIter();
-        NodeDataClass graphFirstNode = graphNodeIter.next();
+        Iterator<Vertex> graphNodeIter = graph.nodeIter();
+        Vertex graphFirstNode = graphNodeIter.next();
 
         return isConnected(graph, graphFirstNode) && isConnected(invertedGraph, graphFirstNode);
     }
@@ -98,12 +97,12 @@ public class DirectedWeightedGraphAlgorithmsClass {
      * @param nodeFirst
      * @return
      */
-    private boolean isConnected(DirectedWeightedClass g, NodeDataClass nodeFirst) {
+    private boolean isConnected(DiGraph g, Vertex nodeFirst) {
         setAllTags(g, NOT_VISITED);
         BFS(nodeFirst, g);
-        Iterator<NodeDataClass> nodesIter = g.nodeIter();
+        Iterator<Vertex> nodesIter = g.nodeIter();
         while (nodesIter.hasNext()) {
-            NodeDataClass currentNode = nodesIter.next();
+            Vertex currentNode = nodesIter.next();
             if (currentNode.getTag() == NOT_VISITED) {
                 return false;
             }
@@ -117,18 +116,18 @@ public class DirectedWeightedGraphAlgorithmsClass {
      * @param node
      * @param g
      */
-    private void BFS(NodeDataClass node, DirectedWeightedClass g) {
-        NodeDataClass firstNode = node;
-        Queue<NodeDataClass> queue = new LinkedList<>();
+    private void BFS(Vertex node, DiGraph g) {
+        Vertex firstNode = node;
+        Queue<Vertex> queue = new LinkedList<>();
         firstNode.setTag(VISITED);
         queue.add(firstNode);
         while (!queue.isEmpty()) {
             firstNode = queue.poll();
-            Iterator<EdgeDataClass> currentNodeEdgesIter = g.edgeIter(firstNode.getKey());
+            Iterator<Edge> currentNodeEdgesIter = g.edgeIter(firstNode.getKey());
             while (currentNodeEdgesIter.hasNext()) {
-                EdgeDataClass currentEdge = currentNodeEdgesIter.next();
+                Edge currentEdge = currentNodeEdgesIter.next();
                 int destNodeId = currentEdge.getDest();
-                NodeDataClass destNode = g.getNode(destNodeId);
+                Vertex destNode = g.getNode(destNodeId);
                 if (destNode.getTag() == NOT_VISITED) {
                     destNode.setTag(VISITED);
                     queue.add(destNode);
@@ -137,10 +136,10 @@ public class DirectedWeightedGraphAlgorithmsClass {
         }
     }
 
-    private void setAllTags(DirectedWeightedClass graph, int value) {
-        Iterator<NodeDataClass> nodesIter = graph.nodeIter();
+    private void setAllTags(DiGraph graph, int value) {
+        Iterator<Vertex> nodesIter = graph.nodeIter();
         while (nodesIter.hasNext()) {
-            NodeDataClass currentNode = nodesIter.next();
+            Vertex currentNode = nodesIter.next();
             currentNode.setTag(value);
         }
     }
@@ -175,13 +174,13 @@ public class DirectedWeightedGraphAlgorithmsClass {
      * @return
      */
 
-    public List<NodeDataClass> shortestPath(int src, int dest) {
+    public List<Vertex> shortestPath(int src, int dest) {
         if (graph.getNode(src) == null || graph.getNode(dest) == null) {
             return null;
         }
-        List<NodeDataClass> path = new ArrayList<>();
+        List<Vertex> path = new ArrayList<>();
         if (graph.getNode(src) != null && src == dest) {
-            NodeDataClass toAdd = graph.getNode(src);
+            Vertex toAdd = graph.getNode(src);
             path.add(toAdd);
             return path;
         }
@@ -189,11 +188,11 @@ public class DirectedWeightedGraphAlgorithmsClass {
         if (!mapPrev.containsKey(dest)) {
             return null;
         }
-        NodeDataClass destVertex = graph.getNode(dest);
+        Vertex destVertex = graph.getNode(dest);
         path.add(destVertex);
         int prevVertex = mapPrev.get(dest);
         while (prevVertex != -1) {
-            NodeDataClass toAdd = graph.getNode(prevVertex);
+            Vertex toAdd = graph.getNode(prevVertex);
             path.add(toAdd);
             prevVertex = mapPrev.get(prevVertex);
         }
@@ -207,12 +206,12 @@ public class DirectedWeightedGraphAlgorithmsClass {
      * @return
      */
 
-    public NodeDataClass center() {
-        Iterator<NodeDataClass> graphVerticesIter = graph.nodeIter();
+    public Vertex center() {
+        Iterator<Vertex> graphVerticesIter = graph.nodeIter();
         int keyofCenter = -1;
         double minMaxDist = INFINITY;
         while (graphVerticesIter.hasNext()) {
-            NodeDataClass currentVertex = graphVerticesIter.next();
+            Vertex currentVertex = graphVerticesIter.next();
             calculateShortestPath(currentVertex.getKey());
             double maxValue = findMaxValue();
             if (maxValue < minMaxDist) {
@@ -222,10 +221,10 @@ public class DirectedWeightedGraphAlgorithmsClass {
 
         }
         if (keyofCenter == -1) {
-            NodeDataClass first = getGraph().nodeIter().next();
+            Vertex first = getGraph().nodeIter().next();
             return first;
         }
-        NodeDataClass centerVertex = this.graph.getNode(keyofCenter);
+        Vertex centerVertex = this.graph.getNode(keyofCenter);
         return centerVertex;
     }
 
@@ -236,11 +235,11 @@ public class DirectedWeightedGraphAlgorithmsClass {
      * @return
      */
 
-    public List<NodeDataClass> tsp(List<NodeDataClass> cities) {
+    public List<Vertex> tsp(List<Vertex> cities) {
         if (cities.size() == 1) {
             return cities;
         }
-        List<NodeDataClass> toReturn = new ArrayList<>();
+        List<Vertex> toReturn = new ArrayList<>();
         HashSet<Integer> unvisited = new HashSet<>();
         initiateSetForTSP(cities, unvisited);
         return tsp(unvisited, cities.get(0));
@@ -253,14 +252,14 @@ public class DirectedWeightedGraphAlgorithmsClass {
      * @param first
      * @return
      */
-    public List<NodeDataClass> tsp(HashSet<Integer> unvisited, NodeDataClass first) {
-        List<NodeDataClass> toReturn = new ArrayList<>();
-        NodeDataClass currentNode = first;
+    public List<Vertex> tsp(HashSet<Integer> unvisited, Vertex first) {
+        List<Vertex> toReturn = new ArrayList<>();
+        Vertex currentNode = first;
         while (unvisited.size() > 0) {
             unvisited.remove(currentNode.getKey());
             int nextNodeId = findIdOfMinDistForTSP(unvisited, currentNode.getKey());
-            List<NodeDataClass> pathFromCurrentToNext = shortestPath(currentNode.getKey(), nextNodeId);
-            for (NodeDataClass node : pathFromCurrentToNext) {
+            List<Vertex> pathFromCurrentToNext = shortestPath(currentNode.getKey(), nextNodeId);
+            for (Vertex node : pathFromCurrentToNext) {
                 int pathNodeID = node.getKey();
                 if (unvisited.contains(pathNodeID)) {
                     unvisited.remove(pathNodeID);
@@ -310,7 +309,7 @@ public class DirectedWeightedGraphAlgorithmsClass {
 //            FileReader FR = new FileReader(file);
 //            BufferedReader BR = new BufferedReader(FR);
             GraphJson graphFromJson = json.fromJson(file, GraphJson.class);
-            DirectedWeightedClass graph = deserializeGraph(graphFromJson);
+            DiGraph graph = deserializeGraph(graphFromJson);
             init(graph);
             return true;
 
@@ -328,20 +327,20 @@ public class DirectedWeightedGraphAlgorithmsClass {
      * @param src
      */
     public void calculateShortestPath(int src) {
-        NodeDataClass source = graph.getNode(src);
+        Vertex source = graph.getNode(src);
         mapDist.clear();
         mapPrev.clear();
         initiateMapDist();
         mapPrev.put(src, -1);
-        Queue<NodeDataClass> queue = new LinkedList<>();
+        Queue<Vertex> queue = new LinkedList<>();
         mapDist.put(src, 0.0);
         queue.add(source);
         while (!queue.isEmpty()) {
-            NodeDataClass currentNode = queue.poll();
-            Iterator<EdgeDataClass> currentNodeNeighbors = graph.edgeIter(currentNode.getKey());
+            Vertex currentNode = queue.poll();
+            Iterator<Edge> currentNodeNeighbors = graph.edgeIter(currentNode.getKey());
             while (currentNodeNeighbors.hasNext()) {
-                EdgeDataClass currentEdge = currentNodeNeighbors.next();
-                NodeDataClass destNode = graph.getNode(currentEdge.getDest());
+                Edge currentEdge = currentNodeNeighbors.next();
+                Vertex destNode = graph.getNode(currentEdge.getDest());
                 double weight = currentEdge.getWeight();
                 double totalWeight = mapDist.get(currentNode.getKey()) + weight;
                 if (totalWeight < mapDist.get(destNode.getKey())) {
@@ -405,14 +404,14 @@ public class DirectedWeightedGraphAlgorithmsClass {
      */
     private GraphJson serializeGraph() {
         GraphJson serializedGraph = new GraphJson();
-        Iterator<NodeDataClass> nodeIter = this.graph.nodeIter();
-        Iterator<EdgeDataClass> edgeIter = this.graph.edgeIter();
+        Iterator<Vertex> nodeIter = this.graph.nodeIter();
+        Iterator<Edge> edgeIter = this.graph.edgeIter();
         while (nodeIter.hasNext()) {
-            NodeDataClass currentVertex = nodeIter.next();
+            Vertex currentVertex = nodeIter.next();
             serializedGraph.addNode(currentVertex);
         }
         while (edgeIter.hasNext()) {
-            EdgeDataClass currentEdge = edgeIter.next();
+            Edge currentEdge = edgeIter.next();
             serializedGraph.addEdge(currentEdge);
         }
         return serializedGraph;
@@ -424,15 +423,15 @@ public class DirectedWeightedGraphAlgorithmsClass {
      * @param fromJson
      * @return
      */
-    private DirectedWeightedClass deserializeGraph(GraphJson fromJson) {
-        DirectedWeightedClass loadedGraph = new DirectedWeightedClass();
+    private DiGraph deserializeGraph(GraphJson fromJson) {
+        DiGraph loadedGraph = new DiGraph();
         for (NodeForJson node : fromJson.Nodes) {
             String[] location = node.pos.split(",");
             double x = Double.parseDouble(location[0]);
             double y = Double.parseDouble(location[1]);
             double z = Double.parseDouble(location[2]);
             int id = node.id;
-            NodeDataClass toAdd = new NodeDataClass(id, x, y, z);
+            Vertex toAdd = new Vertex(id, x, y, z);
             loadedGraph.addNode(toAdd);
         }
         for (EdgeForJson edge : fromJson.Edges) {
@@ -450,9 +449,9 @@ public class DirectedWeightedGraphAlgorithmsClass {
      * @return
      */
     void initiateMapDist() {
-        Iterator<NodeDataClass> nodeIter = graph.nodeIter();
+        Iterator<Vertex> nodeIter = graph.nodeIter();
         while (nodeIter.hasNext()) {
-            NodeDataClass currentVertex = nodeIter.next();
+            Vertex currentVertex = nodeIter.next();
             int vertexId = currentVertex.getKey();
             mapDist.put(vertexId, INFINITY);
         }
@@ -464,8 +463,8 @@ public class DirectedWeightedGraphAlgorithmsClass {
      * @param nodeList
      * @param unvisited
      */
-    public void initiateSetForTSP(List<NodeDataClass> nodeList, HashSet<Integer> unvisited) {
-        for (NodeDataClass node : nodeList) {
+    public void initiateSetForTSP(List<Vertex> nodeList, HashSet<Integer> unvisited) {
+        for (Vertex node : nodeList) {
             int idOfCurrentVertex = node.getKey();
             unvisited.add(idOfCurrentVertex);
         }
@@ -476,28 +475,40 @@ public class DirectedWeightedGraphAlgorithmsClass {
      *
      * @return
      */
-    public DirectedWeightedClass invertGraph() {
-        DirectedWeightedClass inverted = new DirectedWeightedClass();
-        Iterator<NodeDataClass> nodesIter = getGraph().nodeIter();
-        Iterator<EdgeDataClass> edgesIter = getGraph().edgeIter();
+    public DiGraph invertGraph() {
+        DiGraph inverted = new DiGraph();
+        Iterator<Vertex> nodesIter = getGraph().nodeIter();
+        Iterator<Edge> edgesIter = getGraph().edgeIter();
         while (nodesIter.hasNext()) {
-            NodeDataClass currentNode = nodesIter.next();
-            inverted.addNode(new NodeDataClass(currentNode));
+            Vertex currentNode = nodesIter.next();
+            inverted.addNode(new Vertex(currentNode));
         }
         while (edgesIter.hasNext()) {
-            EdgeDataClass currentEdge = edgesIter.next();
+            Edge currentEdge = edgesIter.next();
             inverted.connect(currentEdge.getDest(), currentEdge.getSrc(), currentEdge.getWeight());
         }
         return inverted;
     }
 
     public void str() {
-        Iterator iter = graph.nodeIter();
+        Iterator <Vertex> iter = graph.nodeIter();
         while (iter.hasNext()) {
-            NodeDataClass n = (NodeDataClass) iter.next();
+            Vertex n = (Vertex) iter.next();
             System.out.println(n.getKey() + "  " + n.getLocation().x() + "  " + n.getLocation().y());
 
         }
+    }
+
+    public Hashtable<Integer, Double> distToVertices(int agentVertexId){
+        calculateShortestPath(agentVertexId);
+        Hashtable<Integer, Double> mapToReturn = new Hashtable<>();
+        Iterator<Integer> keyIter = this.mapDist.keySet().iterator();
+        while (keyIter.hasNext()){
+            int currentKey = keyIter.next();
+            double currentDist = mapDist.get(currentKey);
+            mapToReturn.put(currentKey, currentDist);
+        }
+        return mapToReturn;
     }
 
 

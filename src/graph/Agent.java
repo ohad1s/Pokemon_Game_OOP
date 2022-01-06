@@ -2,11 +2,6 @@ package graph;
 
 import com.google.gson.Gson;
 import json.AgentForJson;
-import json.PokemonForJson;
-
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 
 public class Agent {
     private int id;
@@ -14,7 +9,7 @@ public class Agent {
     private int src;
     private int dest;
     private double speed;
-    private GeoLocationClass pos;
+    private Point3D pos;
 
     public Agent(int id, double value, int src, int dest, double speed, double x, double y) {
         this.id = id;
@@ -22,7 +17,15 @@ public class Agent {
         this.src = src;
         this.dest = dest;
         this.speed = speed;
-        this.pos = new GeoLocationClass(x, y, 0);
+        this.pos = new Point3D(x, y, 0);
+    }
+    public Agent() {
+        this.id = 0;
+        this.value = 0;
+        this.src = 0;
+        this.dest = 0;
+        this.speed = 0;
+        this.pos = null;
     }
 
     public void setId(int id) {
@@ -45,7 +48,7 @@ public class Agent {
         this.speed = speed;
     }
 
-    public void setPos(GeoLocationClass pos) {
+    public void setPos(Point3D pos) {
         this.pos = pos;
     }
 
@@ -69,7 +72,7 @@ public class Agent {
         return speed;
     }
 
-    public GeoLocationClass getPos() {
+    public Point3D getPos() {
         return pos;
     }
 
@@ -84,8 +87,6 @@ public class Agent {
     public boolean LoadFromJson(String file) {
         try {
             Gson json = new Gson();
-//            FileReader FR = new FileReader(file);
-//            BufferedReader BR = new BufferedReader(FR);
             AgentForJson AgentFromJson = json.fromJson(file, AgentForJson.class);
             this.dest = AgentFromJson.dest;
             this.id = AgentFromJson.id;
@@ -93,7 +94,7 @@ public class Agent {
             this.src = AgentFromJson.src;
             this.value = AgentFromJson.value;
             String[] arr = AgentFromJson.pos.split(",");
-            this.pos = new GeoLocationClass(Double.parseDouble(arr[0]), Double.parseDouble(arr[1]), 0);
+            this.pos = new Point3D(Double.parseDouble(arr[0]), Double.parseDouble(arr[1]), 0);
             return true;
 
         } catch (Exception e) {

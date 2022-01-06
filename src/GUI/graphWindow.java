@@ -8,14 +8,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 
 
 public class graphWindow extends JFrame implements ActionListener {
-    DirectedWeightedGraphAlgorithmsClass graph;
+    DiGraphAlgo graph;
     Panel panel;
     final Dimension ScreenSize = Toolkit.getDefaultToolkit().getScreenSize();
     Game myGame;
@@ -23,7 +19,7 @@ public class graphWindow extends JFrame implements ActionListener {
     /**
      * this method is the constructor of graphWindow
      */
-    public graphWindow(DirectedWeightedGraphAlgorithmsClass graph,Game myGame) {
+    public graphWindow(DiGraphAlgo graph, Game myGame) {
         super();
         this.myGame =myGame;
         this.graph=graph;

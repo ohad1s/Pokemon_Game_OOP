@@ -3,14 +3,12 @@ package graph;
 import com.google.gson.Gson;
 import json.PokemonForJson;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-
 public class Pokemon {
     private double value;
     private int type;
-    private GeoLocationClass pos;
+    private Point3D pos;
+    Edge edge;
+
 
     /**
      * this method is the vertex constructor.
@@ -20,10 +18,22 @@ public class Pokemon {
      * @param y
      *
      */
-    public Pokemon(double value, int type, double x, double y) {
+    public Pokemon(double value, int type, double x, double y, Edge pokemonEdge) {
         this.value = value;
         this.type = type;
-        this.pos = new GeoLocationClass(x,y, 0);
+        this.pos = new Point3D(x,y, 0);
+        this.edge = pokemonEdge;
+    }
+
+    public Pokemon(){
+        this.value = 0;
+        this.type = 0;
+        this.pos = null;
+        this.edge = null;
+    }
+
+    public void setEdge(Edge edge) {
+        this.edge = edge;
     }
 
     public void setValue(double value) {
@@ -34,7 +44,7 @@ public class Pokemon {
         this.type = type;
     }
 
-    public void setPos(GeoLocationClass pos) {
+    public void setPos(Point3D pos) {
         this.pos = pos;
     }
 
@@ -54,7 +64,11 @@ public class Pokemon {
         return this.pos.y();
     }
 
-    public GeoLocationClass getPos() {
+    public Edge getEdge() {
+        return edge;
+    }
+
+    public Point3D getPos() {
         return pos;
     }
 
@@ -67,7 +81,7 @@ public class Pokemon {
             this.type=PokemonFromJson.type;
             this.value= PokemonFromJson.value;
             String[]arr=PokemonFromJson.pos.split(",");
-            this.pos=new GeoLocationClass(Double.parseDouble(arr[0]),Double.parseDouble(arr[1]),0);
+            this.pos=new Point3D(Double.parseDouble(arr[0]),Double.parseDouble(arr[1]),0);
             return true;
 
         } catch (Exception e) {

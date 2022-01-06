@@ -1,7 +1,5 @@
 package json;
 
-import graph.GeoLocationClass;
-
 public class AgentForJson {
     public int id;
     public double value;

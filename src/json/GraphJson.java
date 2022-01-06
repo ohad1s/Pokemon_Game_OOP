@@ -1,10 +1,8 @@
 package json;
-import com.google.gson.*;
 
 
-
-import graph.EdgeDataClass;
-import graph.NodeDataClass;
+import graph.Edge;
+import graph.Vertex;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +16,7 @@ public class GraphJson {
         this.Nodes = new ArrayList<>();
     }
 
-    public void addNode(NodeDataClass toAdd) {
+    public void addNode(Vertex toAdd) {
         double x = toAdd.getLocation().x();
         double y = toAdd.getLocation().y();
         double z = toAdd.getLocation().z();
@@ -27,7 +25,7 @@ public class GraphJson {
         Nodes.add(jsonNode);
     }
 
-    public void addEdge(EdgeDataClass toAdd){
+    public void addEdge(Edge toAdd){
         int src = toAdd.getSrc();
         double w = toAdd.getWeight();
         int dest = toAdd.getDest();
