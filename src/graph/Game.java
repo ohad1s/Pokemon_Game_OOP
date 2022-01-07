@@ -110,6 +110,11 @@ public class Game {
         }
     }
 
+    public void UpdateTime(String time) {
+        this.ttl=(Integer.parseInt(time))/1000;
+    }
+
+
     private void loadPokemonsFromJsonArray(JSONArray pokemonsJsonArr) {
         for (int i = 0; i < pokemonsJsonArr.length(); i++) {
             JSONObject pok = pokemonsJsonArr.getJSONObject(i);
@@ -177,32 +182,32 @@ public class Game {
         agentPath.clear();
         for (Agent agent : agents) {
             int agentId = agent.getId();
-            Edge toInit = new Edge(-1,-1,-1);
+            Edge toInit = new Edge(-1, -1, -1);
             agentDestEdge.put(agentId, toInit);
-            agentPath.put(agentId,new ArrayList<>());
+            agentPath.put(agentId, new ArrayList<>());
         }
     }
 
-    public void findNextPath(Agent agent){
+    public void findNextPath(Agent agent) {
         int agentId = agent.getId();
         int agentSrcVertexId = agent.getSrc();
         Hashtable<Integer, Double> distToAllVertices = graph.distToVertices(agentSrcVertexId);
         double maxValuePokemon = 0;
         double minDIst = Double.MAX_VALUE;
         Edge destEdge = null;
-        for(Pokemon pokemon : pokemons){
+        for (Pokemon pokemon : pokemons) {
             Edge currEdge = pokemon.getEdge();
-            if(agents.size() == 1 ||!isDest(currEdge)) {
+            if (agents.size() == 1 || !isDest(currEdge)) {
                 double distToEdgeSrc = distToAllVertices.get(currEdge.getSrc());
                 double edgeWeight = currEdge.getWeight();
                 double totalWeight = distToEdgeSrc + edgeWeight;
-                if (totalWeight < minDIst ) {
+                if (totalWeight < minDIst) {
                     minDIst = totalWeight;
                     destEdge = currEdge;
                 }
             }
         }
-        if(destEdge == null){
+        if (destEdge == null) {
             return;
         }
         this.agentDestEdge.put(agentId, destEdge);
@@ -210,7 +215,6 @@ public class Game {
         List<Vertex> pathToDestEdge = graph.shortestPath(agentSrcVertexId, edgeSrcVertex);
         this.agentPath.put(agentId, pathToDestEdge);
     }
-
 
 
     public int agentNextDest(Agent agent) {
@@ -234,16 +238,15 @@ public class Game {
         edgeDestVertex = destEdge.getDest();
 
         if (agentCurrPath.size() == 1) {
-            Edge nullEdge = new Edge(-1,-1,-1);
-            this.agentDestEdge.put(agentId,nullEdge);
+            Edge nullEdge = new Edge(-1, -1, -1);
+            this.agentDestEdge.put(agentId, nullEdge);
             return destEdge.getDest();
         }
         if (agentSrcVertex == edgeSrcVertex) {
-            Edge nullEdge = new Edge(-1,-1,-1);
-            this.agentDestEdge.put(agentId,nullEdge);
+            Edge nullEdge = new Edge(-1, -1, -1);
+            this.agentDestEdge.put(agentId, nullEdge);
             return edgeDestVertex;
         }
-
 
 
         for (int i = 0; i < agentCurrPath.size(); i++) {
@@ -257,9 +260,9 @@ public class Game {
         return nextVertexId;
     }
 
-    private boolean isDest(Edge edge){
-        for(Edge e : this.agentDestEdge.values()){
-            if( e == edge){
+    private boolean isDest(Edge edge) {
+        for (Edge e : this.agentDestEdge.values()) {
+            if (e == edge) {
                 return true;
             }
         }

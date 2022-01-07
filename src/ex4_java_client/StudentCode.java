@@ -3,6 +3,7 @@ package ex4_java_client; /**
  * A trivial example for starting the server and running all needed commands
  */
 
+import GUI.FinishWnd;
 import GUI.graphWindow;
 import graph.Agent;
 import graph.DiGraphAlgo;
@@ -73,6 +74,7 @@ public class StudentCode {
             myGame.UpdateAgents(agentsStr);
             myGame.UpdatePokemons(pokemonsStr);
             myGame.UpdateInfo(infoStr);
+            myGame.UpdateTime(client.timeToEnd());
             gWnd.repaint();
             client.move();
             try {
@@ -89,6 +91,8 @@ public class StudentCode {
         }
         gWnd.setVisible(false);
         gWnd.dispose();
+        FinishWnd finish=new FinishWnd(myGame);
+        finish.setVisible(true);
 
     }
 

@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.Random;
 
 public class Panel extends JPanel {
     DiGraph graph;
@@ -16,7 +17,8 @@ public class Panel extends JPanel {
     final Dimension ScreenSize = Toolkit.getDefaultToolkit().getScreenSize();
     double minX, minY, maxX, maxY;
     double X_par, Y_par;
-    BufferedImage[] pokemonsImages = new BufferedImage[10];
+    Image[] pokemonsImages; //= new Image[10];
+    JButton quit;
 
 
     /**
@@ -33,6 +35,22 @@ public class Panel extends JPanel {
         this.minY = Double.MAX_VALUE;
         this.X_par = 0;
         this.Y_par = 0;
+        this.quit=new JButton("EXIT");
+        this.quit.setLocation(0,0);
+        this.quit.setBackground(Color.RED);
+        this.quit.setForeground(Color.white);
+        this.add(quit);
+        this.pokemonsImages = new Image[10];
+        try {
+            BufferedImage img1 = ImageIO.read(new File("C:\\Users\\shira\\Desktop\\Pokemon_Game_OOP-main\\Pokemon_Game_OOP-main\\src\\GUI\\images\\charizard.png"));
+            BufferedImage img2 = ImageIO.read(new File("C:\\Users\\shira\\Desktop\\Pokemon_Game_OOP-main\\Pokemon_Game_OOP-main\\src\\GUI\\images\\poke1.png"));
+            Image imgg1 = img1.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+            Image imgg2 = img2.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+            this.pokemonsImages[0] = imgg1;
+            this.pokemonsImages[1] = imgg2;
+        }
+        catch (Exception e){System.out.println("FileNotFound");}
+
 
 
 
@@ -49,18 +67,29 @@ public class Panel extends JPanel {
     protected void paintComponent(Graphics g) {
         try {
             BufferedImage img1 = ImageIO.read(new File("C:\\Users\\shira\\Desktop\\Ex4\\src\\GUI\\images\\background.png"));
-//            pokemonsImages[0] = image;
-            g.drawImage(img1, 0, 0, this);
+            Image imgg1 = img1.getScaledInstance(this.getWidth(), this.getHeight(), Image.SCALE_SMOOTH);
+            g.drawImage(imgg1, 0, 0, this);
         } catch (IOException ex) {
         }
         DrawNodes(g);
         DrawEdges(g);
         DrawPokemons(g);
         DrawAgents(g);
-//        Image img1= pokemonsImages[0].getScaledInstance(50,50,Image.SCALE_SMOOTH);
-//        g.drawImage(img1, 100, 100, this);
+        DrawInfo(g);
 
-
+    }
+    /**
+     * this method draws the info of the game on the graphWindow
+     *
+     * @param g
+     */
+    private void DrawInfo(Graphics g) {
+        Font StringInfoFont=new Font("Ariel",Font.HANGING_BASELINE,36);
+        g.setFont(StringInfoFont);
+        g.setColor(Color.BLACK);
+        g.drawString("Moves: "+this.myGame.moves,(this.getWidth()/4)*3,this.getHeight()/12);
+        g.drawString("Score: "+this.myGame.score,(this.getWidth()/2)-75,this.getHeight()/12);
+        g.drawString("Time: "+this.myGame.ttl,this.getWidth()/12,this.getHeight()/12);
     }
 
     /**
@@ -74,9 +103,15 @@ public class Panel extends JPanel {
             while (iter.hasNext()) {
                 Agent a = iter.next();
                 int x1 = (int) ((a.x() - this.minX) * this.X_par);
-                int y1 = (int) ((a.y() - this.minY) * this.Y_par);
-                g.setColor(Color.BLUE);
-                g.fillOval(x1, y1, 18, 18);
+                int y1 = (int) ((a.y() - this.minY) * this.Y_par)+this.getHeight()/11;
+//                g.setColor(Color.BLUE);
+//                g.fillOval(x1, y1, 18, 18);
+                try {
+                    BufferedImage poke = ImageIO.read(new File("C:\\Users\\shira\\Desktop\\Ex4\\src\\GUI\\images\\POKEBALL.gif"));
+                    Image pokeball = poke.getScaledInstance(35,35, Image.SCALE_SMOOTH);
+                    g.drawImage(pokeball,x1-6,y1-6,this);
+                }
+                catch (Exception e){}
             }
         }
     }
@@ -94,13 +129,15 @@ public class Panel extends JPanel {
             while (iter.hasNext()) {
                 Pokemon p = iter.next();
                 int x1 = (int) ((p.x() - this.minX) * this.X_par);
-                int y1 = (int) ((p.y() - this.minY) * this.Y_par);
+                int y1 = (int) ((p.y() - this.minY) * this.Y_par)+this.getHeight()/11;
+                Image to_draw;
                 if(p.getType() > 0) {
-                    g.setColor(Color.MAGENTA);
+                    to_draw=this.pokemonsImages[1];
                 }else{
-                    g.setColor(Color.GREEN);
+                    to_draw=this.pokemonsImages[0];
                 }
-                g.fillOval(x1, y1, 18, 18);
+                g.drawImage(to_draw,x1-15,y1-15,this);
+//                g.fillOval(x1, y1, 18, 18);
             }
         }
     }
@@ -127,19 +164,19 @@ public class Panel extends JPanel {
                 this.maxY = point.getLocation().y();
             }
         }
-        this.X_par = (ScreenSize.width) / (maxX - minX) * 0.9;
-        this.Y_par = (ScreenSize.height) / (maxY - minY) * 0.8;
+        this.X_par = (this.getWidth()) / (maxX - minX) * 0.9;
+        this.Y_par = (this.getHeight()) / (maxY - minY) * 0.8;
         Iterator<Vertex> iter = this.graph.nodeIter();
         while (iter.hasNext()) {
             Vertex point = iter.next();
             g.setColor(Color.BLACK);
-            g.fillOval((int) ((point.getLocation().x() - this.minX) * this.X_par), (int) ((point.getLocation().y() - this.minY) * this.Y_par), 18, 18);
+            g.fillOval((int) ((point.getLocation().x() - this.minX) * this.X_par), (int) ((point.getLocation().y() - this.minY) * this.Y_par)+this.getHeight()/11, 18, 18);
             Graphics2D g2d = (Graphics2D) g;
             g2d.setColor(Color.RED);
             g2d.setStroke(new BasicStroke(12));
             int key = point.getKey();
             String keyS = String.valueOf(key);
-            g2d.drawString(keyS, (int) ((point.getLocation().x() - this.minX) * this.X_par), (int) ((point.getLocation().y() - this.minY) * this.Y_par));
+            g2d.drawString(keyS, (int) ((point.getLocation().x() - this.minX) * this.X_par), (int) ((point.getLocation().y() - this.minY) * this.Y_par)+this.getHeight()/11);
         }
     }
 
@@ -155,9 +192,9 @@ public class Panel extends JPanel {
             Vertex p1 = this.graph.getNode(arrow.getSrc());
             Vertex p2 = this.graph.getNode(arrow.getDest());
             int x1 = (int) ((p1.getLocation().x() - this.minX) * this.X_par);
-            int y1 = (int) ((p1.getLocation().y() - this.minY) * this.Y_par);
+            int y1 = (int) ((p1.getLocation().y() - this.minY) * this.Y_par)+this.getHeight()/11;
             int x2 = (int) ((p2.getLocation().x() - this.minX) * this.X_par);
-            int y2 = (int) ((p2.getLocation().y() - this.minY) * this.Y_par);
+            int y2 = (int) ((p2.getLocation().y() - this.minY) * this.Y_par)+this.getHeight()/11;
             Arrow ar = new Arrow(x1 + 9, y1 + 9, x2 + 9, y2 + 9, Color.BLUE, 1);
             ar.draw(g);
         }

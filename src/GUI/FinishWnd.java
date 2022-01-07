@@ -9,10 +9,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
-public class graphWindow extends JFrame implements ActionListener {
+public class FinishWnd extends JFrame implements ActionListener {
 
-    DiGraphAlgo graph;
-    Panel panel;
+    FinishPanel panel;
     final Dimension ScreenSize = Toolkit.getDefaultToolkit().getScreenSize();
     Game myGame;
     int ttl;
@@ -20,11 +19,10 @@ public class graphWindow extends JFrame implements ActionListener {
     /**
      * this method is the constructor of graphWindow
      */
-    public graphWindow(DiGraphAlgo graph, Game myGame) {
+    public FinishWnd(Game myGame) {
         super();
         this.myGame = myGame;
-        this.graph = graph;
-        this.panel = new Panel(this.graph.getGraph(), this.myGame);
+        this.panel = new FinishPanel(this.myGame);
         this.add(this.panel);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(ScreenSize.width, ScreenSize.height);
@@ -45,11 +43,6 @@ public class graphWindow extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) throws HeadlessException {
         if (e.getSource() == this.panel.quit) {
             System.exit(0);
-//                    JOptionPane.showMessageDialog(this.panel,
-//                            "You got: "+this.myGame.score+" points, with "+this.myGame.moves+" moves!",
-//                            "Game Over!",
-//                            JOptionPane.INFORMATION_MESSAGE);
-
         }
     }
 }
