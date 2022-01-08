@@ -23,4 +23,10 @@ Shortest Path between two vertices - Finding the path and distance using Dijkstr
 Finding the Graph Center - Finding the vertex in the graph, that has the minimal distance to the farthest vertex using Dijkstra's algorithm.
 
 Finding Shortest Path For List of Vertices - Using a greedy algorithm and Dijkstra's algorithm in order to find the shortest path that goes through all the vertices in the list
+  
+  
+  
+  
+  
+  
 ![d7clisu-c2b6b1eb-84f1-4c3b-9a3d-ce392366320e](https://user-images.githubusercontent.com/92723105/148658976-9a336fea-52f9-4ba0-83a9-7ad0fb7e8819.jpg)
