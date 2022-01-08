@@ -1,5 +1,5 @@
 # Pokemon_Game_OOP
-![Pokemon_logo](https://user-images.githubusercontent.com/92723105/148658959-558eb7eb-2f70-47a2-a237-fb29ae84363f.jpg)
+<!-- ![Pokemon_logo](https://user-images.githubusercontent.com/92723105/148658959-558eb7eb-2f70-47a2-a237-fb29ae84363f.jpg) -->
 # About This Project:
 
 In this project we implemented a Pokemon Game based on directed weighted graph and graph algorithms.
