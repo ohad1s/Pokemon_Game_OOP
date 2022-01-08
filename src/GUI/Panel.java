@@ -42,8 +42,8 @@ public class Panel extends JPanel {
         this.add(quit);
         this.pokemonsImages = new Image[10];
         try {
-            BufferedImage img1 = ImageIO.read(new File("C:\\Users\\shira\\Desktop\\Pokemon_Game_OOP-main\\Pokemon_Game_OOP-main\\src\\GUI\\images\\charizard.png"));
-            BufferedImage img2 = ImageIO.read(new File("C:\\Users\\shira\\Desktop\\Pokemon_Game_OOP-main\\Pokemon_Game_OOP-main\\src\\GUI\\images\\poke1.png"));
+            BufferedImage img1 = ImageIO.read(new File("Pokemon_Game_OOP-main\\src\\GUI\\images\\charizard.png"));
+            BufferedImage img2 = ImageIO.read(new File("Pokemon_Game_OOP-main\\src\\GUI\\images\\poke1.png"));
             Image imgg1 = img1.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
             Image imgg2 = img2.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
             this.pokemonsImages[0] = imgg1;
