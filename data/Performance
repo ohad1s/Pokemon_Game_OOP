@@ -1,0 +1,16 @@
+{"GameServer":{"pokemons":1,"is_logged_in":false,"moves":262,"grade":85,"game_level":0,"max_user_level":-1,"id":0,"graph":"data/A0","agents":1}}
+{"GameServer":{"pokemons":2,"is_logged_in":false,"moves":534,"grade":363,"game_level":1,"max_user_level":-1,"id":0,"graph":"data/A0","agents":1}}
+{"GameServer":{"pokemons":3,"is_logged_in":false,"moves":263,"grade":179,"game_level":2,"max_user_level":-1,"id":0,"graph":"data/A0","agents":1}}
+{"GameServer":{"pokemons":4,"is_logged_in":false,"moves":535,"grade":579,"game_level":3,"max_user_level":-1,"id":0,"graph":"data/A0","agents":1}}
+{"GameServer":{"pokemons":5,"is_logged_in":false,"moves":264,"grade":171,"game_level":4,"max_user_level":-1,"id":0,"graph":"data/A1","agents":1}}
+{"GameServer":{"pokemons":6,"is_logged_in":false,"moves":536,"grade":398,"game_level":5,"max_user_level":-1,"id":0,"graph":"data/A1","agents":1}}
+{"GameServer":{"pokemons":1,"is_logged_in":false,"moves":263,"grade":79,"game_level":6,"max_user_level":-1,"id":0,"graph":"data/A1","agents":1}}
+{"GameServer":{"pokemons":2,"is_logged_in":false,"moves":535,"grade":246,"game_level":7,"max_user_level":-1,"id":0,"graph":"data/A1","agents":1}}
+{"GameServer":{"pokemons":3,"is_logged_in":false,"moves":266,"grade":58,"game_level":8,"max_user_level":-1,"id":0,"graph":"data/A2","agents":1}}
+{"GameServer":{"pokemons":4,"is_logged_in":false,"moves":534,"grade":305,"game_level":9,"max_user_level":-1,"id":0,"graph":"data/A2","agents":1}}
+{"GameServer":{"pokemons":5,"is_logged_in":false,"moves":263,"grade":130,"game_level":10,"max_user_level":-1,"id":0,"graph":"data/A2","agents":1}}
+{"GameServer":{"pokemons":6,"is_logged_in":false,"moves":534,"grade":820,"game_level":11,"max_user_level":-1,"id":0,"graph":"data/A2","agents":3}}
+{"GameServer":{"pokemons":1,"is_logged_in":false,"moves":265,"grade":40,"game_level":12,"max_user_level":-1,"id":0,"graph":"data/A3","agents":1}}
+{"GameServer":{"pokemons":2,"is_logged_in":false,"moves":535,"grade":259,"game_level":13,"max_user_level":-1,"id":0,"graph":"data/A3","agents":2}}
+{"GameServer":{"pokemons":3,"is_logged_in":false,"moves":262,"grade":161,"game_level":14,"max_user_level":-1,"id":0,"graph":"data/A3","agents":3}}
+{"GameServer":{"pokemons":4,"is_logged_in":false,"moves":532,"grade":262,"game_level":15,"max_user_level":-1,"id":0,"graph":"data/A3","agents":1}}

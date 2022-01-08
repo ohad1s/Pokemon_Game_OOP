@@ -78,11 +78,11 @@ public class StudentCode {
             gWnd.repaint();
             client.move();
             try {
-                TimeUnit.MILLISECONDS.sleep(10);
+                TimeUnit.MILLISECONDS.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
+            System.out.println(client.getInfo());
         }
         try {
             client.stopConnection();
