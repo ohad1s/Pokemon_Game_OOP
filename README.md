@@ -10,10 +10,10 @@ In "StudentCode" I implemented a algorithm to place the Agents and them next ste
 As i said before, there is a server that "manage the game".
 In order to start play, you should connect it from the cmd with the command: "java -jar Ex4_Server_v0.0.jar <LEVEL>"
 The game is played "offline"- it means i wrote the algorithm in java and than i see the outcome of my code.
-The game have 16 levels (0-15), every level include a different number of ageants and pokemons, and a different graph.
+The game has 16 levels (0-15), every level include a different number of ageants and pokemons, and a different graph.
 The game screen contains a directed weighted graph, the pokemons are located on the graph edges.
 Every pokemon has a different value and - when you catch one- you got his value to your score.
-Duration of the games are beteen 30-60 seconds, and there is an important rule- you can do only 10 moves (of the agants) per second.
+Durations of the games are between 30-60 seconds, and there is an important rule- you can only do 10 moves (of the agants) per second.
 The Game finished when the time is finished and then you can see your score and moves.
 
 # Algorithms That Are Implemented on the graph in order to show good performence:
