@@ -115,14 +115,14 @@ public class Game {
     }
 
 
-    private void loadPokemonsFromJsonArray(JSONArray pokemonsJsonArr) {
+    private void loadPokemonsFromJsonArray(JSONArray pokemonsJsonArr) throws JSONException {
         for (int i = 0; i < pokemonsJsonArr.length(); i++) {
             JSONObject pok = pokemonsJsonArr.getJSONObject(i);
             JSONObject p = pok.getJSONObject("Pokemon");
             Pokemon my_pok = new Pokemon();
             my_pok.setType((int) p.get("type"));
-            BigDecimal temp = (BigDecimal) p.get("value");
-            my_pok.setValue(temp.doubleValue());
+//            BigDecimal temp = (BigDecimal) p.get("value");
+            my_pok.setValue((double) p.get("value"));
             String my_pos = (String) p.get("pos");
             String[] arr = my_pos.split(",");
             Point3D pokPos = new Point3D(Double.parseDouble(arr[0]), Double.parseDouble(arr[1]), 0);
@@ -133,18 +133,18 @@ public class Game {
         }
     }
 
-    private void loadAgentsFromJsonArray(JSONArray agentsJsonArr) {
+    private void loadAgentsFromJsonArray(JSONArray agentsJsonArr) throws JSONException {
         for (int i = 0; i < agentsJsonArr.length(); i++) {
             JSONObject aga = agentsJsonArr.getJSONObject(i);
             JSONObject a = aga.getJSONObject("Agent");
             Agent my_ag = new Agent();
             my_ag.setId((int) a.get("id"));
-            BigDecimal temp = (BigDecimal) a.get("value");
-            my_ag.setValue(temp.doubleValue());
+//            BigDecimal temp = (BigDecimal) a.get("value");
+            my_ag.setValue((double) a.get("value"));
             my_ag.setSrc((int) a.get("src"));
             my_ag.setDest((int) a.get("dest"));
-            temp = (BigDecimal) a.get("speed");
-            my_ag.setSpeed(temp.doubleValue());
+//            temp = (BigDecimal) a.get("speed");
+            my_ag.setSpeed((double) a.get("speed"));
             String my_pos = (String) a.get("pos");
             String[] arr = my_pos.split(",");
             my_ag.setPos(new Point3D(Double.parseDouble(arr[0]), Double.parseDouble(arr[1]), 0));

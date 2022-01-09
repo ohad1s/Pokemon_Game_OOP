@@ -1,6 +1,7 @@
 package GUI;
 
 import graph.*;
+import org.w3c.dom.ls.LSOutput;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -8,6 +9,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Iterator;
 import java.util.Random;
 
@@ -42,18 +44,21 @@ public class Panel extends JPanel {
         this.add(quit);
         this.pokemonsImages = new Image[10];
         try {
-            BufferedImage img1 = ImageIO.read(new File("Pokemon_Game_OOP-main\\src\\GUI\\images\\charizard.png"));
-            BufferedImage img2 = ImageIO.read(new File("Pokemon_Game_OOP-main\\src\\GUI\\images\\poke1.png"));
+            File charizard = new File("GUI/charizard.png");
+            String currentDir = System.getProperty("user.dir");
+            System.out.println("Current dir using System:" + currentDir);
+            String charizardPath = currentDir + "/src/GUI/images/charizard.png";
+            String meowPath = currentDir + "/src/GUI/images/poke1.png";
+            BufferedImage img1 = ImageIO.read(new File(charizardPath));
+            BufferedImage img2 = ImageIO.read(new File(meowPath));
             Image imgg1 = img1.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
             Image imgg2 = img2.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
             this.pokemonsImages[0] = imgg1;
             this.pokemonsImages[1] = imgg2;
         }
-        catch (Exception e){System.out.println("FileNotFound");}
-
-
-
-
+        catch (Exception e){
+            e.printStackTrace();
+            System.out.println("FileNotFound");}
     }
 
 
@@ -66,7 +71,9 @@ public class Panel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         try {
-            BufferedImage img1 = ImageIO.read(new File("C:\\Users\\shira\\Desktop\\Ex4\\src\\GUI\\images\\background.png"));
+            String currentDir = System.getProperty("user.dir");
+            String backgroundPath = currentDir + "/src/GUI/images/background.png";
+            BufferedImage img1 = ImageIO.read(new File(backgroundPath));
             Image imgg1 = img1.getScaledInstance(this.getWidth(), this.getHeight(), Image.SCALE_SMOOTH);
             g.drawImage(imgg1, 0, 0, this);
         } catch (IOException ex) {
@@ -104,10 +111,10 @@ public class Panel extends JPanel {
                 Agent a = iter.next();
                 int x1 = (int) ((a.x() - this.minX) * this.X_par);
                 int y1 = (int) ((a.y() - this.minY) * this.Y_par)+this.getHeight()/11;
-//                g.setColor(Color.BLUE);
-//                g.fillOval(x1, y1, 18, 18);
                 try {
-                    BufferedImage poke = ImageIO.read(new File("C:\\Users\\shira\\Desktop\\Ex4\\src\\GUI\\images\\POKEBALL.gif"));
+                    String currentDir = System.getProperty("user.dir");
+                    String pokeballPath = currentDir + "/src/GUI/images/POKEBALL.gif";
+                    BufferedImage poke = ImageIO.read(new File(pokeballPath));
                     Image pokeball = poke.getScaledInstance(35,35, Image.SCALE_SMOOTH);
                     g.drawImage(pokeball,x1-6,y1-6,this);
                 }
@@ -124,7 +131,6 @@ public class Panel extends JPanel {
      */
     private void DrawPokemons(Graphics g) {
         if (myGame.pokemons.size() > 0) {
-//        for (Pokemon p : this.myGame.pokemons) {
             Iterator<Pokemon> iter = this.myGame.pokemons.iterator();
             while (iter.hasNext()) {
                 Pokemon p = iter.next();
@@ -137,7 +143,6 @@ public class Panel extends JPanel {
                     to_draw=this.pokemonsImages[0];
                 }
                 g.drawImage(to_draw,x1-15,y1-15,this);
-//                g.fillOval(x1, y1, 18, 18);
             }
         }
     }
