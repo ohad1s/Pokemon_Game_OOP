@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 public class StudentCode {
-    public static void main(String[] args)  {
+    public static void main(String[] args) throws IOException {
         Client client = new Client();
 
         try {
@@ -53,11 +53,7 @@ public class StudentCode {
         myGame.initAgentMaps();
         int startTIme = Integer.parseInt(client.timeToEnd());
         myGame.ttl = startTIme / 1000;
-        String isRunningStr = client.isRunning();
-        System.out.println(isRunningStr);
         client.start();
-        startTIme = Integer.parseInt(client.timeToEnd()) / 1000;
-        System.out.println("" + startTIme);
         graphWindow gWnd = new graphWindow(graphForGame, myGame);
         while (client.isRunning().equals("true")) {
             for (Agent agent : myGame.agents) {
@@ -82,7 +78,6 @@ public class StudentCode {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            System.out.println(client.getInfo());
         }
         try {
             client.stopConnection();

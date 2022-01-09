@@ -44,9 +44,7 @@ public class Panel extends JPanel {
         this.add(quit);
         this.pokemonsImages = new Image[10];
         try {
-            File charizard = new File("GUI/charizard.png");
             String currentDir = System.getProperty("user.dir");
-            System.out.println("Current dir using System:" + currentDir);
             String charizardPath = currentDir + "/src/GUI/images/charizard.png";
             String meowPath = currentDir + "/src/GUI/images/poke1.png";
             BufferedImage img1 = ImageIO.read(new File(charizardPath));
@@ -57,6 +55,7 @@ public class Panel extends JPanel {
             this.pokemonsImages[1] = imgg2;
         }
         catch (Exception e){
+
             e.printStackTrace();
             System.out.println("FileNotFound");}
     }

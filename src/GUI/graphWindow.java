@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 
 public class graphWindow extends JFrame implements ActionListener {
@@ -20,7 +21,7 @@ public class graphWindow extends JFrame implements ActionListener {
     /**
      * this method is the constructor of graphWindow
      */
-    public graphWindow(DiGraphAlgo graph, Game myGame) {
+    public graphWindow(DiGraphAlgo graph, Game myGame) throws IOException {
         super();
         this.myGame = myGame;
         this.graph = graph;
